@@ -10,3 +10,4 @@ werkzeug
 waitress
 langchain
 langchain_openai 
+gunicorn
