@@ -1,3 +1,12 @@
 portkey_ai
 openai
 python-dotenv
+crewai
+crewai_tools
+PyPDF2
+Flask
+flask-cors
+werkzeug
+waitress
+langchain
+langchain_openai 
