@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
+from crew import run_crew
 from crewai import Crew, Process
 from agents import blood_report_analyst, researcher
 from tasks import report_analyze_task, research_task
@@ -33,6 +34,8 @@ def analyze_report():
         city = request.form.get('city')
         state = request.form.get('state')
         country = request.form.get('country')
+        
+        print(f"City: {city}, State: {state}, Country: {country}, File: {file}")
 
         # Basic validation for required fields
         if not file or not city or not state or not country:
@@ -43,29 +46,29 @@ def analyze_report():
         file_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(file_path)
 
-        # Initialize CrewAI with the agents and tasks
-        crew = Crew(
-            agents=[blood_report_analyst, researcher],
-            tasks=[report_analyze_task, research_task],
-            process=Process.sequential,
-            verbose=True
-        )
+        # # Initialize CrewAI with the agents and tasks
+        # crew = Crew(
+        #     agents=[blood_report_analyst, researcher],
+        #     tasks=[report_analyze_task, research_task],
+        #     process=Process.sequential,
+        #     verbose=True
+        # )
 
-        # Run the analysis with location inputs
-        result = crew.kickoff(inputs={
-            'blood_report': file_path,
-            'city': city,
-            'state': state,
-            'country': country
-        })
+        # # Run the analysis with location inputs
+        # result = crew.kickoff(inputs={
+        #     'blood_report': file_path,
+        #     'city': city,
+        #     'state': state,
+        #     'country': country
+        # })
+        
+        run_crew(file_path, city, state, country)
         
         # Read the output files using fallback logic
         analysis = read_file('blood_report_summary12.md')
         recommendations = read_file('blood_report_recommendations12.md')
         specialist_recommendations = read_file('specialists_recommendations12.md')
-
-        # Clean up the uploaded file to maintain a clean environment
-        os.remove(file_path)
+        
 
         return jsonify({
             'analysis': analysis,
@@ -75,6 +78,10 @@ def analyze_report():
     except Exception as e:
         logging.error(f"An error occurred during report analysis: {e}")
         return jsonify({'error': 'An internal error occurred.'}), 500
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'Healthy'})
 
 if __name__ == '__main__':
     app.run(debug=True)

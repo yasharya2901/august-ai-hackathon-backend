@@ -94,6 +94,7 @@ find_specialists_task = Task(
         ),
         expected_output='A list of recommended specialists in the user\'s location with explanations of their relevance.',
         agent=specialist_finder,
+        tools=[search_tool],
         context=[research_task, report_analyze_task],
         output_file='specialists_recommendations12.md'
     )

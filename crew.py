@@ -29,5 +29,3 @@ def run_crew(file_path, city, state, country):
     result = crew.kickoff(inputs={'blood_report': file_path, 'city':city, 'state': state, 'country': country})
     
     return result
-
-run_crew("sample_blood_report.pdf", "E-city Phase 1, Bangalore", "Karnataka", "India")

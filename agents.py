@@ -75,9 +75,28 @@ blood_report_checker = Agent(
     allow_delegation=True
 )
 
+# specialist_finder = Agent(
+#     role='Medical Specialist Locator',
+#     goal=(
+#         "Identify and suggest highly rated medical specialists based on the user's health concerns and location. "
+#         "If the blood report is invalid, instruct the user to upload a valid report instead of proceeding with specialist suggestions."
+#     ),
+#     backstory=(
+#         "A healthcare professional with deep knowledge of various medical specialties and strong connections to top-rated specialists. "
+#         "You are responsible for ensuring that the blood report is valid before suggesting specialists, and if not, guiding the user to provide a valid report."
+#     ),
+#     verbose=os.getenv("VERBOSE") == "True",
+#     allow_delegation=True,
+#     llm=llm,
+#     location_services_enabled=True,
+#     specialist_recommendation_strategy="based_on_health_priority",
+#     quality_filter="highly_rated_with_patient_reviews"
+# )
+
+
 specialist_finder = Agent(
     role='Medical Specialist Locator',
-    goal='Identify and suggest highly rated medical specialists based on the user’s health concerns and location.',
+    goal="Identify and suggest highly rated medical specialists based on the user's health concerns and location.",
     backstory='A healthcare professional with deep knowledge of various medical specialties and strong connections to top-rated specialists.',
     verbose=os.getenv("VERBOSE") == "True",
     allow_delegation=True,  # Can delegate to the health advisor if further recommendations on specialists are needed.
